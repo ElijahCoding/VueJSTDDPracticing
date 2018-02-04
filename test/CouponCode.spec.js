@@ -14,17 +14,24 @@ describe ('CouponCode', () => {
     expect(wrapper.contains('input.coupon-code')).toBe(true)
   });
 
-  it ('validates a user-provided coupon code', () => {
+  it ('validates a real coupon code', () => {
     // let couponCode = wrapper.find('input.coupon-code');
     //
     // couponCode.element.value = '50OFF';
     // couponCode.trigger('input');
-    
+
     enterCouponCode('50OFF');
 
     expect(wrapper.vm.valid).toBe(true)
     expect(wrapper.html()).toContain('Coupon Redeemed: 50% Off!');
   });
+
+  // it ('validates a fake coupon code', () => {
+  //       enterCouponCode('NOTREAL');
+  //
+  //       expect(wrapper.html()).toContain('Invalid Coupon Code');
+  //   });
+
 
   it ('broadcasts the percentage discount when a valid coupon code is applied', () => {
     enterCouponCode('50OFF');
