@@ -4,15 +4,17 @@ import CouponCode from '../src/components/CouponCode.vue';
 
 describe ('CouponCode', () => {
 
-  it ('accepts a coupon code', () => {
-    let wrapper = mount(CouponCode);
+  let wrapper;
 
+  beforeEach(() => {
+    wrapper = mount(CouponCode)
+  });
+
+  it ('accepts a coupon code', () => {
     expect(wrapper.contains('input.coupon-code')).toBe(true)
   });
 
   it ('validates a user-provided coupon code', () => {
-    let wrapper = mount(CouponCode);
-
     let couponCode = wrapper.find('input.coupon-code');
 
     couponCode.element.value = '50OFF';
@@ -21,4 +23,16 @@ describe ('CouponCode', () => {
     expect(wrapper.vm.valid).toBe(true)
     expect(wrapper.html()).toContain('Coupon Redeemed: 50% Off!');
   });
+
+  it ('broadcasts the percentage discount when a valid coupon code is applied', () => {
+    let couponCode = wrapper.find('input.coupon-code');
+
+    couponCode.element.value = '50OFF';
+    couponCode.trigger('input');
+
+    // console.log(wrapper.emitted());
+
+    expect(wrapper.emitted().applied[0]).toEqual([50]);
+
+  })
 });

@@ -38,6 +38,12 @@
     methods: {
       validate () {
         this.valid = this.coupons.map(coupon => coupon.code).includes(this.code);
+
+        if (this.valid) {
+          let discount = this.coupons.find(coupon => coupon.code === this.code).discount
+
+          this.$emit('applied', discount);
+        }
       }
     }
   }

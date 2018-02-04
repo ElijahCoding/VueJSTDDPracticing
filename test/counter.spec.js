@@ -35,7 +35,7 @@ describe ('Counter', () => {
     expect(wrapper.vm.count).toBe(4)
   });
 
-  it ('nevet goes below 0', () => { // .only
+  it ('never goes below 0', () => { // .only
     expect(wrapper.vm.count).toBe(0)
 
     expect(wrapper.find('.decrement').hasStyle('display', 'none')).toBe(true)
