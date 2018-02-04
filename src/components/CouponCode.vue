@@ -30,8 +30,12 @@
     },
 
     computed: {
+      selectedCoupon () {
+        return this.coupons.find(coupon => coupon.code === this.code);
+      },
+
       message () {
-        return this.coupons.find(coupon => coupon.code === this.code).message
+        return this.selectedCoupon.message
       }
     },
 
@@ -40,9 +44,9 @@
         this.valid = this.coupons.map(coupon => coupon.code).includes(this.code);
 
         if (this.valid) {
-          let discount = this.coupons.find(coupon => coupon.code === this.code).discount
+          // let discount = this.selectedCoupon.discount
 
-          this.$emit('applied', discount);
+          this.$emit('applied', this.selectedCoupon.discount);
         }
       }
     }

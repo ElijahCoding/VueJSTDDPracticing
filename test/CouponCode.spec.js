@@ -15,24 +15,35 @@ describe ('CouponCode', () => {
   });
 
   it ('validates a user-provided coupon code', () => {
-    let couponCode = wrapper.find('input.coupon-code');
-
-    couponCode.element.value = '50OFF';
-    couponCode.trigger('input');
+    // let couponCode = wrapper.find('input.coupon-code');
+    //
+    // couponCode.element.value = '50OFF';
+    // couponCode.trigger('input');
+    
+    enterCouponCode('50OFF');
 
     expect(wrapper.vm.valid).toBe(true)
     expect(wrapper.html()).toContain('Coupon Redeemed: 50% Off!');
   });
 
   it ('broadcasts the percentage discount when a valid coupon code is applied', () => {
-    let couponCode = wrapper.find('input.coupon-code');
-
-    couponCode.element.value = '50OFF';
-    couponCode.trigger('input');
+    enterCouponCode('50OFF');
+    // let couponCode = wrapper.find('input.coupon-code');
+    //
+    // couponCode.element.value = '50OFF';
+    // couponCode.trigger('input');
 
     // console.log(wrapper.emitted());
-
+    expect(wrapper.emitted().applied).toBeTruthy();
     expect(wrapper.emitted().applied[0]).toEqual([50]);
 
-  })
+  });
+
+  function enterCouponCode(code) {
+    let couponCode = wrapper.find('input.coupon-code');
+
+    couponCode.element.value = code;
+    couponCode.trigger('input');
+
+  }
 });
