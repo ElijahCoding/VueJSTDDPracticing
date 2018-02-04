@@ -26,20 +26,21 @@ describe ('Question', () => {
   it ('can be edited', () => {
     expect(wrapper.contains('input[name=title]')).toBe(false);
 
-    wrapper.find('#edit').trigger('click');
+    click('#edit');
 
     expect(wrapper.find('input[name=title]').element.value).toBe('The title');
     expect(wrapper.find('textarea[name=body]').element.value).toBe('The body');
   });
 
   it ('hides the edit button during edit mode', () => {
-    wrapper.find('#edit').trigger('click');
+    click('#edit');
 
     expect(wrapper.contains('#edit')).toBe(false);
   });
 
   it ('updateds the question after being edited', () => {
-    wrapper.find('#edit').trigger("click");
+    click('#edit');
+    // wrapper.find('#edit').trigger("click");
 
     type('input[name=title]', 'Changed title');
     type('textarea[name=body]', 'Changed body');
@@ -51,6 +52,16 @@ describe ('Question', () => {
 
     see('Changed title');
     see('Changed body');
+  });
+
+  it ('can cancel out of edit model', () => {
+    click('#edit');
+
+    type('input[name=title]', 'Changed title');
+
+    click('#cancel');
+
+    see('The title');
   });
 
   let see = (text, selector) => {
