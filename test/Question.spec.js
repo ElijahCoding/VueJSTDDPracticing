@@ -1,11 +1,14 @@
 import { mount } from 'vue-test-utils';
 import expect from 'expect';
 import Question from '../src/components/Question.vue';
+import moxios from 'moxios';
 
 describe ('Question', () => {
   let wrapper;
 
   beforeEach(() => {
+    moxios.install();
+
     wrapper = mount(Question, {
       propsData: {
         dataQuestion: {
@@ -14,6 +17,10 @@ describe ('Question', () => {
         }
       }
     });
+  });
+
+  afterEach(() => {
+    moxios.uninstall();
   });
 
   it ('presents the title and the body', () => {
@@ -38,7 +45,7 @@ describe ('Question', () => {
     expect(wrapper.contains('#edit')).toBe(false);
   });
 
-  it ('updateds the question after being edited', () => {
+  it.only ('updates the question after being edited', (done) => {
     click('#edit');
     // wrapper.find('#edit').trigger("click");
 
@@ -47,11 +54,25 @@ describe ('Question', () => {
     // wrapper.find('input[name=title]').element.value = 'Changed title';
     // wrapper.find('input[name=title]').trigger('input');
 
+    moxios.stubRequest(/questions\/\d+/, {
+      status: 200,
+      response: {
+        title: 'Changed title',
+        body: 'Changed body'
+      }
+    });
+
     click('#update');
     // wrapper.find('#update').trigger('click');
 
     see('Changed title');
     see('Changed body');
+
+    moxios.wait(() => {
+      see('Your question has been updated.');
+
+      done();
+    });
   });
 
   it ('can cancel out of edit model', () => {
